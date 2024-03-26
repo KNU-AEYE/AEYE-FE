@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<div>
-			<AppBar position="static">
+			<AppBar position="static" style={{ backgroundColor: '#65d586' }}>
 				<Toolbar variant="dense">
 					{small && (
 						<>
