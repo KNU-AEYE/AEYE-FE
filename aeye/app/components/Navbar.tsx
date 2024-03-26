@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useRouter } from 'next/navigation';
 
 import {
 	List,
@@ -20,6 +21,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 const Navbar: React.FC = () => {
 	const small = useMediaQuery("(max-width:600px)");
 	const full = useMediaQuery("(min-width:600px)");
+	const router = useRouter();
 
 	const [open, setOpen] = useState<boolean>(false);
 
@@ -90,15 +92,14 @@ const Navbar: React.FC = () => {
 							>
 								AEYE
 							</Typography>
-							<Button color="inherit">
+							<Button color="inherit" onClick={() => router.push('/home')}>
 								Home
 							</Button>
-
-							<Button color="inherit">
-								About
+							<Button color="inherit" onClick={() => router.push('/cams')}>
+								Cams
 							</Button>
-							<Button color="inherit">
-								Contact
+							<Button color="inherit" onClick={() => router.push('/my')}>
+								My
 							</Button>
 						</>
 					)}
