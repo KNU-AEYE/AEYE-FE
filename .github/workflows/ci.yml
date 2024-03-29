@@ -12,7 +12,6 @@ jobs:
 
     steps:
       - name: checkout source code
-        working-directory: ./aeye
         uses: actions/checkout@v4
               
       - name: Install dependencies
