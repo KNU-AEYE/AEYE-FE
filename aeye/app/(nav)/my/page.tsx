@@ -17,13 +17,13 @@ const Item = styled(Paper)(({ theme }) => ({
 	padding: theme.spacing(1),
 	textAlign: 'center',
 	color: theme.palette.text.secondary,
+	margin: theme.spacing(1),
 }));
-
 
 function ProfileAvatar() {
 	const [avatar, setAvatar] = useState<string | null>(null);
 	return (
-		<div style={{ display: 'flex', flexDirection: 'row' }}>
+		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 			<Tooltip title="Update Avatar" placement="top-start">
 				<Avatar
 					alt="User Avatar"
@@ -31,7 +31,7 @@ function ProfileAvatar() {
 					sx={{ width: 56, height: 56 }}
 				/>
 			</Tooltip>
-			<Typography variant="h5" component="h2">
+			<Typography variant="h5" component="h2" style={{ marginTop: '8px' }}>
 				사람이름
 			</Typography>
 		</div>
@@ -41,7 +41,7 @@ function ProfileAvatar() {
 export default function MyPage() {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<Grid container spacing={20}>
+			<Grid container spacing={4}>
 				<Grid item xs={12} md={8} lg={9} container direction="column">
 					<ProfileAvatar />
 					<Grid item>
