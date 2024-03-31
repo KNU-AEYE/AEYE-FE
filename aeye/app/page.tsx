@@ -7,11 +7,11 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 const handleLoginWithGoogle = async () => {
-	window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=982098409297-8krnotrs5aq8d9og7tofnvnnslfvf677.apps.googleusercontent.com&scope=email%20profile&state=z7o9tS1KdVjnBVcc1YhH7Dwk5FPqID_u_MIkY38nTP8%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google`);
+	window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=982098409297-8krnotrs5aq8d9og7tofnvnnslfvf677.apps.googleusercontent.com&scope=email%20profile&state=z7o9tS1KdVjnBVcc1YhH7Dwk5FPqID_u_MIkY38nTP8%3D&redirect_uri=https://api.a-eye.live/login/oauth2/code/google`);
 }
 
 const handleLoginWithKakao = async () => {
-	window.location.replace(`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=cdfde096b799357de4372685356ad669&scope=profile_nickname%20profile_image%20account_email&state=gefkirF7Oe7S0L7WPE2MQU2nnajOgYBMD1DSgI56N2s%3D&redirect_uri=http://localhost:8080/login/oauth2/code/kakao`);
+	window.location.replace(`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=cdfde096b799357de4372685356ad669&scope=profile_nickname%20profile_image%20account_email&state=gefkirF7Oe7S0L7WPE2MQU2nnajOgYBMD1DSgI56N2s%3D&redirect_uri=https://api.a-eye.live/login/oauth2/code/kakao`);
 }
 
 

@@ -17,7 +17,7 @@ const LoginPage = () => {
     }
 
     router.push('/home');
-  }, []);
+  }, [router]);
 
   return (
     <div>
