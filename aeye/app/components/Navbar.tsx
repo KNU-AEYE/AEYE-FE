@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
 	};
 
 	return (
-		<div style={{marginBottom: '30px'}}>
+		<div style={{ marginBottom: '30px' }}>
 			<AppBar position="static" style={{ backgroundColor: '#65d586' }}>
 				<Toolbar variant="dense">
 					{small && (
@@ -97,6 +97,9 @@ const Navbar: React.FC = () => {
 							</Button>
 							<Button color="inherit" onClick={() => router.push('/cams')}>
 								Cams
+							</Button>
+							<Button color="inherit" onClick={() => router.push('/stat')}>
+								Stat
 							</Button>
 							<Button color="inherit" onClick={() => router.push('/my')}>
 								My
