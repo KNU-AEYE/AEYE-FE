@@ -6,4 +6,4 @@ VOLUME ./aeye
 
 WORKDIR ./aeye
 
-ENTRYPOINT ["tail", "-f"]
+ENTRYPOINT ["npm", "run", "start"]
