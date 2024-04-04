@@ -22,6 +22,7 @@ jobs:
         working-directory: ./aeye
         run: npm run build
 
-      - name: start the server
-        working-directory: ./aeye
-        run: npm run start
+      - name: start fe
+        run:
+          make up
+
