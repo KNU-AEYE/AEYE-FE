@@ -37,7 +37,7 @@ jobs:
           push: true
           tages: ${{ env.IMAGE_NAME }}:latest
 
-      - Pull Docker image to Server
+      - name: Pull Docker image to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.HOST }}
