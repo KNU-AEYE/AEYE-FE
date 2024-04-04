@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  frontend:
+    container_name: aeye-fe
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - front-app:/aeye
+    ports:
+      - '3000:3000'
+
+volumes:
+  front-app:
+    driver: local
+    driver_opts:
+      device: ./aeye
+      type: none
+      o: bind

@@ -1,9 +1,28 @@
-FROM node:latest
+# --------
+# Build Stage
 
-RUN apt-get update && apt-get upgrade -y
+FROM node:21-slim AS builder
 
-VOLUME ./aeye
+WORKDIR /app
 
-WORKDIR ./aeye
+COPY aeye/package.json aeye/package-lock.json* ./
 
-ENTRYPOINT ["tail", "-f"]
+RUN npm ci
+
+COPY aeye/ .
+
+RUN npm run build
+
+# --------
+# Deployment Stage
+
+FROM node:21-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/next.config.mjs ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+
+CMD ["npm", "start"]
