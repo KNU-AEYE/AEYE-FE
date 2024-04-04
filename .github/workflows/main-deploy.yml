@@ -18,10 +18,6 @@ jobs:
         working-directory: ./aeye
         run: npm install
 
-      - name: Generate build
-        working-directory: ./aeye
-        run: npm run build
-
       - name: start fe
         run:
           make up

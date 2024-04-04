@@ -2,8 +2,10 @@ FROM node:latest
 
 RUN apt-get update && apt-get upgrade -y
 
+COPY ./script.sh .
+
 VOLUME ./aeye
 
-WORKDIR ./aeye
+ENTRYPOINT ["/bin/bash"]
 
-ENTRYPOINT ["npm", "run", "start"]
+CMD ["./script.sh"]
