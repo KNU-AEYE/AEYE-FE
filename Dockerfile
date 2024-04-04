@@ -1,22 +1,3 @@
-<<<<<<< Updated upstream
-=======
-# --------
-# Build Stage
-
-FROM node:21-slim AS builder
-
-WORKDIR /app
-
-COPY aeye/ .
-
-RUN npm ci
-
-RUN npm run build
-
-# --------
-# Deployment Stage
-
->>>>>>> Stashed changes
 FROM node:21-slim
 
 WORKDIR /app
