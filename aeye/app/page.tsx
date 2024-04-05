@@ -1,19 +1,45 @@
 'use client'
 
 import { useEffect } from 'react';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import Image from 'next/image'
+import {
+	Paper,
+	Button,
+	Stack,
+	Typography
+} from '@mui/material';
 
-const handleLoginWithGoogle = async () => {
-	window.location.replace(`https://api.a-eye.live/oauth2/authorization/google`);
+function GoogleLoginButton() {
+	const handleLoginWithGoogle = async () => {
+		window.location.replace(`https://api.a-eye.live/oauth2/authorization/google`);
+	}
+
+	return (
+		<Image
+			src="/signin-assets/web_light_rd_ctn@1x.png"
+			width={189}
+			height={40}
+			alt="kakao-login-button"
+			onClick={handleLoginWithGoogle}
+		/>
+	);
 }
 
-const handleLoginWithKakao = async () => {
-	window.location.replace(`https://api.a-eye.live/oauth2/authorization/kakao`);
-}
+function KakaoLoginButton() {
+	const handleLoginWithKakao = async () => {
+		window.location.replace(`https://api.a-eye.live/oauth2/authorization/kakao`);
+	}
 
+	return (
+		<Image
+			src="/signin-assets/kakao_login_medium_narrow.png"
+			width={183}
+			height={45}
+			alt="kakao-login-button"
+			onClick={handleLoginWithKakao}
+		/>
+	);
+}
 
 function LoginCard() {
 	return (
@@ -21,30 +47,10 @@ function LoginCard() {
 			<Paper elevation={24} style={{ padding: '60px', textAlign: 'center' }}>
 				<Stack spacing={3}>
 					<Typography variant="h4">AEYE</Typography>
-					<Button
-						variant="contained"
-						sx={{ bgcolor: '#65d586', '&:hover': { bgcolor: '#4caf50' } }}
-						onClick={handleLoginWithGoogle}
-					>
-						Login with Google
-					</Button>
-					<Button
-						variant="contained"
-						sx={{ bgcolor: '#65d586', '&:hover': { bgcolor: '#4caf50' } }}
-						onClick={handleLoginWithKakao}
-					>
-						Login with Kakao
-					</Button>
+					<GoogleLoginButton />
+					<KakaoLoginButton />
 				</Stack>
 			</Paper>
-		</div>
-	);
-}
-
-function Logo() {
-	return (
-		<div>
-			logo image
 		</div>
 	);
 }
@@ -84,7 +90,6 @@ export default function Landing() {
 
 	return (
 		<Stack>
-			<Logo />
 			<LoginCard />
 		</Stack>
 	);
