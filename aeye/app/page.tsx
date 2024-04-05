@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import Image from 'next/image'
 import {
 	Paper,
-	Button,
 	Stack,
 	Typography
 } from '@mui/material';
