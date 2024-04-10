@@ -20,22 +20,70 @@ const Item = styled(Paper)(({ theme }) => ({
 	margin: theme.spacing(1),
 }));
 
+type Member = {
+  id: number;
+  name: string;
+  email: string;
+  profileUri: string;
+  oauth2Id: string;
+  phone: string;
+  socialLogin: string;
+  admin: boolean;
+};
+
+function stringAvatar(name: string | undefined) {
+  return {
+    children: `${name?.split(" ")[0][0]}${name?.split(" ")[1][0]}`,
+  };
+}
+
 function ProfileAvatar() {
-	const [avatar, setAvatar] = useState<string | null>(null);
-	return (
-		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-			<Tooltip title="Update Avatar" placement="top-start">
-				<Avatar
-					alt="User Avatar"
-					src={avatar || "/default-avatar.png"}
-					sx={{ width: 56, height: 56 }}
-				/>
-			</Tooltip>
-			<Typography variant="h5" component="h2" style={{ marginTop: '8px' }}>
-				사람이름
-			</Typography>
-		</div>
-	);
+  const [member, setMember] = useState<Member | null>(null);
+
+  const fetchMember = async () => {
+    try {
+      const res = await fetch("https://api.a-eye.live/member/detail", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      if (res.ok) {
+        const jsonData = await res.json();
+        setMember(jsonData.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMember();
+  }, []);
+
+  return (
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
+      <Tooltip title="Update profile" placement="top-start">
+        {member?.profileUri ? (
+          <Avatar
+            alt="User member"
+            src={member?.profileUri}
+            sx={{ width: 56, height: 56 }}
+          />
+        ) : (
+          <Avatar {...stringAvatar(member?.name)} />
+        )}
+      </Tooltip>
+      <Typography variant="h5" component="h2" style={{ marginTop: "8px" }}>
+        {member?.name}
+      </Typography>
+      <Typography style={{ color: "gray" }}>
+        {member?.email} {member?.phone}
+      </Typography>
+    </div>
+  );
 }
 
 export default function MyPage() {
