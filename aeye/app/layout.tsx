@@ -1,19 +1,19 @@
 export const metadata = {
-	title: 'AEYE',
-	description: 'AI powered CCTV controller',
-}
+  title: "AEYE",
+  description: "AI powered CCTV controller",
+};
 
 export default function RootLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode
+  children: React.ReactNode;
 }) {
-	return (
-		<html lang="en">
-			<body>
-			 <link rel="icon" href="/images/favicon.ico" sizes="any" />
-				{children}
-			</body>
-		</html>
-	)
+  return (
+    <html lang="en">
+      <body>
+        <link rel="icon" href="/images/favicon.ico" sizes="any" />
+        {children}
+      </body>
+    </html>
+  );
 }

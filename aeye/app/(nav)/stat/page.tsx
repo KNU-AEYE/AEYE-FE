@@ -1,5 +1,3 @@
 export default function Stat() {
-	return (
-		<div>stat page</div>
-	);
+  return <div>stat page</div>;
 }

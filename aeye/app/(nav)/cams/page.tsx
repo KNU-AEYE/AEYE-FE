@@ -1,3 +1,3 @@
 export default function Cams() {
-	return <div></div>;
+  return <div></div>;
 }
