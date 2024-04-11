@@ -1,7 +1,5 @@
-export const metadata = {
-  title: "AEYE",
-  description: "AI powered CCTV controller",
-};
+"use client";
+import { RecoilRoot } from "recoil";
 
 export default function RootLayout({
   children,
@@ -12,7 +10,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <link rel="icon" href="/images/favicon.ico" sizes="any" />
-        {children}
+        <RecoilRoot>{children}</RecoilRoot>
       </body>
     </html>
   );
