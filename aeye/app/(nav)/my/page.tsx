@@ -13,17 +13,6 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(1),
 }));
 
-type Member = {
-  id: number;
-  name: string;
-  email: string;
-  profileUri: string;
-  oauth2Id: string;
-  phone: string;
-  socialLogin: string;
-  admin: boolean;
-};
-
 function stringAvatar(name: string | undefined) {
   return {
     children: `${name?.split(" ")[0][0]}${name?.split(" ")[1][0]}`,
