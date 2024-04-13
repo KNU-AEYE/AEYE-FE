@@ -72,7 +72,7 @@ export default function MyPage() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4}>
-        <Grid item xs={12} md={8} lg={9} container direction="column">
+        <Grid item container direction="column">
           <ProfileAvatar />
           <Grid item>
             <Item>itme1</Item>
