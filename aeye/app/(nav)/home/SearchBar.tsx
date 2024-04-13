@@ -1,6 +1,8 @@
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
+import { useRecoilState } from "recoil";
+import { searchQueryState } from "@/app/recoil-states";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -45,6 +47,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchBar() {
+  const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState); // Using Recoil state
+
+  const handleInputChange = (event : any) => {
+    setSearchQuery(event.target.value); // Update Recoil state with user input
+  };
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -53,6 +61,8 @@ export default function SearchBar() {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
+        value={searchQuery}
+        onChange={handleInputChange}
       />
     </Search>
   );
