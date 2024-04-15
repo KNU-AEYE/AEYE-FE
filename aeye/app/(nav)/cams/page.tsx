@@ -1,27 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import fetchWithInterception from "@/app/fetchWrapper";
 
 export default function Cams() {
-  const fetchVids = async () => {
-    try {
-      const res = await fetch("https://api.a-eye.live/video", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      if (res.ok) {
-        const jsonData = await res.json();
-        console.log(jsonData.data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
-    fetchVids();
+    fetchWithInterception("https://api.a-eye.live/video", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((jsonData) => console.log(jsonData.data))
+      .catch((error) => console.error(error));
   }, []);
   return <div></div>;
 }

@@ -4,6 +4,9 @@ import { searchQueryState } from "@/app/recoil-states";
 import { useEffect, useState } from "react";
 import Vidpane from "@/app/components/Vidpane";
 import { Grid, Paper, Typography } from "@mui/material";
+import fetchWithInterception from "@/app/fetchWrapper";
+
+const FETCH_TIMEOUT = 200;
 
 function Vidgroup({ videos }: { videos: VideoDocument[] }) {
   return (
@@ -22,39 +25,30 @@ function Vidgroup({ videos }: { videos: VideoDocument[] }) {
 export default function SearchResult() {
   const searchQuery = useRecoilValue(searchQueryState);
   const [results, setResults] = useState<Vidarr>();
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
-    null
-  );
-
-  const fetchResults = async () => {
-    const res = await fetch(
-      `https://api.a-eye.live/video/search?keyword=${searchQuery}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    );
-    if (res.ok) {
-      const jsonData = await res.json();
-      console.log(jsonData.data);
-      setResults(jsonData.data);
-    }
-  };
 
   useEffect(() => {
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
+    let searchTimeout: NodeJS.Timeout;
+
+    const fetchResults = () => {
+      fetchWithInterception(
+        `https://api.a-eye.live/video/search?keyword=${searchQuery}`,
+        { method: "GET" }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((jsonData) => setResults(jsonData.data))
+        .catch((error) => console.error(error));
+    };
+
+    if (searchQuery) {
+      searchTimeout = setTimeout(fetchResults, FETCH_TIMEOUT);
     }
 
-    setSearchTimeout(setTimeout(fetchResults, 200));
-
-    return () => {
-      if (searchTimeout) {
-        clearTimeout(searchTimeout);
-      }
-    };
+    return () => clearTimeout(searchTimeout);
   }, [searchQuery]);
 
   return (
