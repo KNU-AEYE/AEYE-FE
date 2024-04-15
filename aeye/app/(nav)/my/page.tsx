@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Box, Grid, Paper, Avatar, Tooltip, Typography } from "@mui/material";
+import fetchWithInterception from "@/app/fetchWrapper";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -26,23 +27,12 @@ function ProfileAvatar() {
   const [member, setMember] = useState<Member>();
 
   useEffect(() => {
-    const fetchMember = async () => {
-      try {
-        const res = await fetch("https://api.a-eye.live/member/detail", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        if (res.ok) {
-          const jsonData = await res.json();
-          setMember(jsonData.data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchMember();
+    fetchWithInterception("https://api.a-eye.live/member/detail", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((jsonData) => setMember(jsonData.data))
+      .catch((error) => console.error(error));
   }, []);
 
   return (
