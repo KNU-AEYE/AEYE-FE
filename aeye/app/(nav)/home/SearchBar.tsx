@@ -13,6 +13,7 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginLeft: 0,
   width: "100%",
+  marginBottom: theme.spacing(2),
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
     width: "auto",
@@ -49,7 +50,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState); // Using Recoil state
 
-  const handleInputChange = (event : any) => {
+  const handleInputChange = (event: any) => {
     setSearchQuery(event.target.value); // Update Recoil state with user input
   };
 
