@@ -1,33 +1,32 @@
-import Backdrop from "@mui/material/Backdrop";
 import { useState } from "react";
+import Backdrop from "@mui/material/Backdrop";
 import { styled } from "@mui/material/styles";
+import VideoInfos from "./VidInfos";
 
 const ThumbnailImage = styled("img")({
   cursor: "pointer",
+  maxWidth: "100%",
+  maxHeight: "100%",
 });
 
 const VideoContainer = styled("div")({
-  width: "100%",
-  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  width: "80%",
+  height: "80%",
   position: "relative",
 });
 
 const Video = styled("video")({
-  width: "100%",
-  height: "100%",
-});
-
-const VideoInfo = styled("div")({
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  textAlign: "center",
-  color: "white",
+  flex: "1",
+  maxWidth: "60%",
+  maxHeight: "60%",
 });
 
 export default function Vidpane({ video }: { video: VideoDocument }) {
   const [showVideoInfo, setShowVideoInfo] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+
   const handleClick = () => {
     setShowVideoInfo(true);
   };
@@ -35,6 +34,19 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
   const handleClose = () => {
     setShowVideoInfo(false);
   };
+
+  const handleVideoLoaded = () => {
+    if (startTime > 0) {
+      const videoElement = document.getElementById(
+        "videoPlayer"
+      ) as HTMLVideoElement;
+      if (videoElement) {
+        videoElement.currentTime = startTime;
+        setStartTime(0); // Reset start time after setting it
+      }
+    }
+  };
+
   return (
     <div>
       <ThumbnailImage
@@ -42,17 +54,19 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
         alt={video.videoResponseDto.title}
         onClick={handleClick}
       />
-      <Backdrop open={showVideoInfo} onClick={handleClose}>
+      <Backdrop
+        open={showVideoInfo}
+        onClick={handleClose}
+        sx={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+      >
         <VideoContainer>
-          <Video controls>
-            <source src={video.videoResponseDto.videoUri} type="video/mp4" />
-            Your browser does not support the video tag.
-          </Video>
-          <VideoInfo>
-            <p>{video.videoResponseDto.title}</p>
-            <p>{video.videoResponseDto.content}</p>
-            {/* Add other video information here */}
-          </VideoInfo>
+          <Video
+            id="videoPlayer"
+            controls
+            onLoadedData={handleVideoLoaded}
+            src={video.videoResponseDto.videoUri}
+          />
+          <VideoInfos video={video} />
         </VideoContainer>
       </Backdrop>
     </div>
