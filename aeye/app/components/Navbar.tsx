@@ -83,6 +83,9 @@ const Navbar: React.FC = () => {
               <Button color="inherit" onClick={() => router.push("/stat")}>
                 Stat
               </Button>
+              <Button color="inherit" onClick={() => router.push("/report")}>
+                Report
+              </Button>
               <Button color="inherit" onClick={() => router.push("/my")}>
                 My
               </Button>
