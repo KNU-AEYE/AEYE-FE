@@ -2,7 +2,7 @@
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -89,7 +89,7 @@ export default async function Report() {
   }/${today.getFullYear()}`;
 
   return (
-    <>
+    <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" gutterBottom>
           관제일지
@@ -99,6 +99,19 @@ export default async function Report() {
         </Typography>
       </Box>
       <DataTable />
-    </>
+      <Box display="flex" justifyContent="flex-end" mb={2} mt={2}>
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: "#65d586",
+            "&:hover": {
+              bgcolor: "#3b7a38",
+            },
+          }}
+        >
+          생성하기
+        </Button>
+      </Box>
+    </Container>
   );
 }
