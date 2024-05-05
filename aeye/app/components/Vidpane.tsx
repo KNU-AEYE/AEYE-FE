@@ -1,27 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
-import { styled } from "@mui/material/styles";
 import VideoInfos from "./VidInfos";
-
-const ThumbnailImage = styled("img")({
-  cursor: "pointer",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
-
-const VideoContainer = styled("div")({
-  display: "flex",
-  alignItems: "center",
-  width: "80%",
-  height: "80%",
-  position: "relative",
-});
-
-const Video = styled("video")({
-  flex: "1",
-  maxWidth: "60%",
-  maxHeight: "60%",
-});
+import { ThumbnailImage, Video, VideoContainer } from "@/app/styled";
 
 function timeStringToSeconds(timeString: string) {
   const timeParts = timeString.split(":").map(Number);
@@ -83,7 +63,7 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
   }, []);
 
   return (
-    <div>
+    <>
       {thumbnailSrc && (
         <ThumbnailImage
           src={thumbnailSrc}
@@ -106,6 +86,6 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
           <VideoInfos video={video} />
         </VideoContainer>
       </Backdrop>
-    </div>
+    </>
   );
 }
