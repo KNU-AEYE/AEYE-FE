@@ -57,20 +57,25 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
     }
   };
 
-  useEffect(() => {
-    const timeInSeconds = timeStringToSeconds(video.time);
-    generateThumbnail(timeInSeconds);
-  }, []);
+  // useEffect(() => {
+  //   const timeInSeconds = timeStringToSeconds(video.time);
+  //   generateThumbnail(timeInSeconds);
+  // }, []);
 
   return (
     <>
-      {thumbnailSrc && (
+      {/* {thumbnailSrc && (
         <ThumbnailImage
           src={thumbnailSrc}
           alt={video.videoResponseDto.title}
           onClick={handleClick}
         />
-      )}
+      )} */}
+      <ThumbnailImage
+        src={video.videoResponseDto.thumbnailUri}
+        alt={video.videoResponseDto.title}
+        onClick={handleClick}
+      />
       <Backdrop
         open={showVideoInfo}
         onClick={handleClose}
