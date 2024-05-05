@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import VideoInfos from "./VidInfos";
 import { ThumbnailImage, Video, VideoContainer } from "@/app/styled";
@@ -28,7 +28,6 @@ function timeStringToSeconds(timeString: string) {
 export default function Vidpane({ video }: { video: VideoDocument }) {
   const [showVideoInfo, setShowVideoInfo] = useState(false);
   const [thumbnailSrc, setThumbnailSrc] = useState<string | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleClick = () => {
     setShowVideoInfo(true);
@@ -38,44 +37,50 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
     setShowVideoInfo(false);
   };
 
-  const generateThumbnail = async (timeStamp: number) => {
-    const video = videoRef.current;
-    if (video) {
+  const generateThumbnail = async (videoUrl: string, timeStamp: number) => {
+    try {
+      const video = document.createElement("video");
       video.crossOrigin = "anonymous";
-      video.pause();
-      video.currentTime = timeStamp;
-      await new Promise((resolve) => video.addEventListener("seeked", resolve));
+      video.src = videoUrl;
+      await video.load();
+      await new Promise((resolve) => {
+        video.addEventListener("loadeddata", resolve);
+      });
+
       const canvas = document.createElement("canvas");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext("2d");
       if (ctx) {
+        video.currentTime = timeStamp;
+        await new Promise((resolve) =>
+          video.addEventListener("seeked", resolve)
+        );
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const thumbnailSrc = canvas.toDataURL();
         setThumbnailSrc(thumbnailSrc);
+      } else {
+        throw new Error("Failed to create canvas context");
       }
+    } catch (error) {
+      console.error("Thumbnail generation failed:", error);
     }
   };
 
-  // useEffect(() => {
-  //   const timeInSeconds = timeStringToSeconds(video.time);
-  //   generateThumbnail(timeInSeconds);
-  // }, []);
+  useEffect(() => {
+    const timeInSeconds = timeStringToSeconds(video.time);
+    generateThumbnail(video.videoResponseDto.videoUri, timeInSeconds);
+  }, []);
 
   return (
     <>
-      {/* {thumbnailSrc && (
+      {thumbnailSrc && (
         <ThumbnailImage
           src={thumbnailSrc}
           alt={video.videoResponseDto.title}
           onClick={handleClick}
         />
-      )} */}
-      <ThumbnailImage
-        src={video.videoResponseDto.thumbnailUri}
-        alt={video.videoResponseDto.title}
-        onClick={handleClick}
-      />
+      )}
       <Backdrop
         open={showVideoInfo}
         onClick={handleClose}
@@ -83,7 +88,6 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
       >
         <VideoContainer>
           <Video
-            ref={videoRef}
             id="videoPlayer"
             controls
             src={video.videoResponseDto.videoUri}
