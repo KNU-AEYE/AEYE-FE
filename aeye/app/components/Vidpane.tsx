@@ -1,31 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
-import { styled } from "@mui/material/styles";
 import VideoInfos from "./VidInfos";
+import { ThumbnailImage, Video, VideoContainer } from "@/app/styled";
 
-const ThumbnailImage = styled("img")({
-  cursor: "pointer",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
+function timeStringToSeconds(timeString: string) {
+  const timeParts = timeString.split(":").map(Number);
+  let hours = 0,
+    minutes = 0,
+    seconds = 0;
 
-const VideoContainer = styled("div")({
-  display: "flex",
-  alignItems: "center",
-  width: "80%",
-  height: "80%",
-  position: "relative",
-});
+  if (timeParts.length === 2) {
+    // Format: mm:ss
+    minutes = timeParts[0];
+    seconds = timeParts[1];
+  } else if (timeParts.length === 3) {
+    // Format: hh:mm:ss
+    hours = timeParts[0];
+    minutes = timeParts[1];
+    seconds = timeParts[2];
+  } else {
+    throw new Error("Invalid time string format");
+  }
 
-const Video = styled("video")({
-  flex: "1",
-  maxWidth: "60%",
-  maxHeight: "60%",
-});
+  return hours * 3600 + minutes * 60 + seconds;
+}
 
 export default function Vidpane({ video }: { video: VideoDocument }) {
   const [showVideoInfo, setShowVideoInfo] = useState(false);
-  const [startTime, setStartTime] = useState(0);
+  const [thumbnailSrc, setThumbnailSrc] = useState<string | null>(null);
 
   const handleClick = () => {
     setShowVideoInfo(true);
@@ -35,25 +37,50 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
     setShowVideoInfo(false);
   };
 
-  const handleVideoLoaded = () => {
-    if (startTime > 0) {
-      const videoElement = document.getElementById(
-        "videoPlayer"
-      ) as HTMLVideoElement;
-      if (videoElement) {
-        videoElement.currentTime = startTime;
-        setStartTime(0); // Reset start time after setting it
+  const generateThumbnail = async (videoUrl: string, timeStamp: number) => {
+    try {
+      const video = document.createElement("video");
+      video.crossOrigin = "anonymous";
+      video.src = videoUrl;
+      await video.load();
+      await new Promise((resolve) => {
+        video.addEventListener("loadeddata", resolve);
+      });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        video.currentTime = timeStamp;
+        await new Promise((resolve) =>
+          video.addEventListener("seeked", resolve)
+        );
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const thumbnailSrc = canvas.toDataURL();
+        setThumbnailSrc(thumbnailSrc);
+      } else {
+        throw new Error("Failed to create canvas context");
       }
+    } catch (error) {
+      console.error("Thumbnail generation failed:", error);
     }
   };
 
+  useEffect(() => {
+    const timeInSeconds = timeStringToSeconds(video.time);
+    generateThumbnail(video.videoResponseDto.videoUri, timeInSeconds);
+  }, []);
+
   return (
-    <div>
-      <ThumbnailImage
-        src={video.videoResponseDto.thumbnailUri}
-        alt={video.videoResponseDto.title}
-        onClick={handleClick}
-      />
+    <>
+      {thumbnailSrc && (
+        <ThumbnailImage
+          src={thumbnailSrc}
+          alt={video.videoResponseDto.title}
+          onClick={handleClick}
+        />
+      )}
       <Backdrop
         open={showVideoInfo}
         onClick={handleClose}
@@ -63,12 +90,11 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
           <Video
             id="videoPlayer"
             controls
-            onLoadedData={handleVideoLoaded}
             src={video.videoResponseDto.videoUri}
           />
           <VideoInfos video={video} />
         </VideoContainer>
       </Backdrop>
-    </div>
+    </>
   );
 }

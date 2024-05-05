@@ -1,12 +1,12 @@
-"use client";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { searchQueryState } from "@/app/recoil-states";
-import { useEffect, useState } from "react";
-import Vidpane from "@/app/components/Vidpane";
-import { Grid, Paper, Typography } from "@mui/material";
 import fetchWithInterception from "@/app/fetchWrapper";
+import Vidpane from "@/app/components/Vidpane";
+import { Grid, Paper, Typography, Pagination } from "@mui/material";
 
 const FETCH_TIMEOUT = 200;
+const PAGE_SIZE = 9;
 
 function Vidgroup({ videos }: { videos: VideoDocument[] }) {
   return (
@@ -22,24 +22,33 @@ function Vidgroup({ videos }: { videos: VideoDocument[] }) {
   );
 }
 
-export default function SearchResult() {
+function NoResultTypography() {
+  return (
+    <Typography
+      variant="h6"
+      align="center"
+      color="textSecondary"
+      style={{ marginTop: 20 }}
+    >
+      No results found
+    </Typography>
+  );
+}
+
+const SearchResult: React.FC = () => {
   const searchQuery = useRecoilValue(searchQueryState);
-  const [results, setResults] = useState<Vidarr>();
+  const [results, setResults] = useState<Vidarr | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
 
     const fetchResults = () => {
       fetchWithInterception(
-        `https://api.a-eye.live/video/search?keyword=${searchQuery}`,
+        `https://api.a-eye.live/video/search?keyword=${searchQuery}&page=${currentPage}&size=${PAGE_SIZE}`,
         { method: "GET" }
       )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
+        .then((response) => response.json())
         .then((jsonData) => setResults(jsonData.data))
         .catch((error) => console.error(error));
     };
@@ -47,24 +56,36 @@ export default function SearchResult() {
     if (searchQuery) {
       searchTimeout = setTimeout(fetchResults, FETCH_TIMEOUT);
     }
-
     return () => clearTimeout(searchTimeout);
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]);
+
+  const handlePaginationChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
       {results && results.videoDocuments.length > 0 ? (
-        <Vidgroup videos={results.videoDocuments} />
+        <>
+          <Vidgroup videos={results.videoDocuments} />
+          <div
+            style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
+          >
+            <Pagination
+              count={results.totalPage}
+              page={currentPage}
+              onChange={handlePaginationChange}
+            />
+          </div>
+        </>
       ) : (
-        <Typography
-          variant="h6"
-          align="center"
-          color={"textSecondary"}
-          style={{ marginTop: 20 }}
-        >
-          No results found
-        </Typography>
+        <NoResultTypography />
       )}
     </>
   );
-}
+};
+
+export default SearchResult;
