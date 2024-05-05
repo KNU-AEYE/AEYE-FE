@@ -3,22 +3,33 @@ import { useRecoilValue } from "recoil";
 import { searchQueryState } from "@/app/recoil-states";
 import { useEffect, useState } from "react";
 import Vidpane from "@/app/components/Vidpane";
-import { Grid, Paper, Typography } from "@mui/material";
 import fetchWithInterception from "@/app/fetchWrapper";
+import { Grid, Paper, Typography, Pagination } from "@mui/material";
 
 const FETCH_TIMEOUT = 200;
 
-function Vidgroup({ videos }: { videos: VideoDocument[] }) {
+function Vidgroup({
+  videos,
+  count,
+}: {
+  videos: VideoDocument[];
+  count: number;
+}) {
   return (
-    <Grid container spacing={2}>
-      {videos.map((video, index) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-          <Paper style={{ padding: 10, background: "#f0f0f0" }}>
-            <Vidpane video={video} />
-          </Paper>
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <Grid container spacing={2}>
+        {videos.map((video, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Paper style={{ padding: 10, background: "#f0f0f0" }}>
+              <Vidpane video={video} />
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
+        <Pagination count={count} />
+      </div>
+    </>
   );
 }
 
@@ -54,7 +65,7 @@ export default function SearchResult() {
   return (
     <>
       {results && results.videoDocuments.length > 0 ? (
-        <Vidgroup videos={results.videoDocuments} />
+        <Vidgroup videos={results.videoDocuments} count={results.totalPage} />
       ) : (
         <Typography
           variant="h6"

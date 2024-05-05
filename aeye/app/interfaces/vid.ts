@@ -16,5 +16,5 @@ interface VideoDocument {
 
 interface Vidarr {
   videoDocuments: VideoDocument[];
-  page: number;
+  totalPage: number;
 }
