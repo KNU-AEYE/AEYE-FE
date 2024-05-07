@@ -3,10 +3,10 @@ import { useRecoilValue } from "recoil";
 import { searchQueryState } from "@/app/recoil-states";
 import fetchWithInterception from "@/app/fetchWrapper";
 import Vidpane from "@/app/components/Vidpane";
-import { Grid, Paper, Typography, Pagination } from "@mui/material";
+import { Grid, Paper, Typography, Pagination, Container } from "@mui/material";
 
 const FETCH_TIMEOUT = 200;
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 
 function Vidgroup({ videos }: { videos: VideoDocument[] }) {
   return (
@@ -69,18 +69,21 @@ const SearchResult: React.FC = () => {
   return (
     <>
       {results && results.videoDocuments.length > 0 ? (
-        <>
+        <Container
+          sx={{
+            display: "grid",
+            placeItems: "center",
+            gap: "20px",
+          }}
+        >
           <Vidgroup videos={results.videoDocuments} />
-          <div
-            style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
-          >
-            <Pagination
-              count={results.totalPage}
-              page={currentPage}
-              onChange={handlePaginationChange}
-            />
-          </div>
-        </>
+          <Pagination
+            count={results.totalPage}
+            page={currentPage}
+            onChange={handlePaginationChange}
+            size="large"
+          />
+        </Container>
       ) : (
         <NoResultTypography />
       )}

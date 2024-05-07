@@ -81,11 +81,14 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
   return (
     <>
       {thumbnailSrc ? (
-        <ThumbnailImage
-          src={thumbnailSrc}
-          alt={video.videoResponseDto.title}
-          onClick={handleClick}
-        />
+        <>
+          <ThumbnailImage
+            src={thumbnailSrc}
+            alt={video.videoResponseDto.title}
+            onClick={handleClick}
+          />
+          <Typography>{video.videoResponseDto.title}</Typography>
+        </>
       ) : (
         <Skeleton variant="rectangular" animation="wave" />
       )}
