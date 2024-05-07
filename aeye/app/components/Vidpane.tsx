@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import VideoInfos from "./VidInfos";
+import Skeleton from "@mui/material/Skeleton";
 import { ThumbnailImage, Video, VideoContainer } from "@/app/styled";
 
 function timeStringToSeconds(timeString: string) {
@@ -74,12 +75,14 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
 
   return (
     <>
-      {thumbnailSrc && (
+      {thumbnailSrc ? (
         <ThumbnailImage
           src={thumbnailSrc}
           alt={video.videoResponseDto.title}
           onClick={handleClick}
         />
+      ) : (
+        <Skeleton variant="rectangular" animation="wave" />
       )}
       <Backdrop
         open={showVideoInfo}

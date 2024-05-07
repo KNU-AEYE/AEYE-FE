@@ -13,7 +13,7 @@ function Vidgroup({ videos }: { videos: VideoDocument[] }) {
     <Grid container spacing={2}>
       {videos.map((video, index) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-          <Paper style={{ padding: 10, background: "#f0f0f0" }}>
+          <Paper sx={{ padding: 10, bgcolor: "#f0f0f0" }}>
             <Vidpane video={video} />
           </Paper>
         </Grid>
