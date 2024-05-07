@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import VideoInfos from "./VidInfos";
 import Skeleton from "@mui/material/Skeleton";
-import { ThumbnailImage, Video, VideoContainer } from "@/app/styled";
+import {
+  ThumbnailImage,
+  Video,
+  VideoContainer,
+} from "@/app/components/styledVid";
+import { Typography } from "@mui/material";
 
 function timeStringToSeconds(timeString: string) {
   const timeParts = timeString.split(":").map(Number);
