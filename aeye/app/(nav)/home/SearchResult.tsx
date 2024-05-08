@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { searchQueryState } from "@/app/recoil-states";
 import fetchWithInterception from "@/app/fetchWrapper";
 import Vidpane from "@/app/components/Vidpane";
-import { Grid, Paper, Typography, Pagination, Container } from "@mui/material";
+import { Grid, Typography, Pagination, Container } from "@mui/material";
 
 const FETCH_TIMEOUT = 200;
 const PAGE_SIZE = 12;
@@ -13,9 +13,7 @@ function Vidgroup({ videos }: { videos: VideoDocument[] }) {
     <Grid container spacing={2}>
       {videos.map((video, index) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-          <Paper sx={{ padding: 10, bgcolor: "#f0f0f0" }}>
-            <Vidpane video={video} />
-          </Paper>
+          <Vidpane video={video} />
         </Grid>
       ))}
     </Grid>

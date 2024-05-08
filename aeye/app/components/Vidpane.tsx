@@ -7,7 +7,6 @@ import {
   Video,
   VideoContainer,
 } from "@/app/components/styledVid";
-import { Typography } from "@mui/material";
 
 function timeStringToSeconds(timeString: string) {
   const timeParts = timeString.split(":").map(Number);
@@ -81,16 +80,17 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
   return (
     <>
       {thumbnailSrc ? (
-        <>
-          <ThumbnailImage
-            src={thumbnailSrc}
-            alt={video.videoResponseDto.title}
-            onClick={handleClick}
-          />
-          <Typography>{video.videoResponseDto.title}</Typography>
-        </>
+        <ThumbnailImage
+          src={thumbnailSrc}
+          alt={video.videoResponseDto.title}
+          onClick={handleClick}
+        />
       ) : (
-        <Skeleton variant="rectangular" animation="wave" />
+        <Skeleton
+          variant="rectangular"
+          animation="wave"
+          sx={{ width: "100%", height: "100%" }}
+        />
       )}
       <Backdrop
         open={showVideoInfo}
