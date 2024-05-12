@@ -36,7 +36,7 @@ function NoResultTypography() {
 const SearchResult: React.FC = () => {
   const searchQuery = useRecoilValue(searchQueryState);
   const [results, setResults] = useState<Vidarr | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
@@ -76,7 +76,7 @@ const SearchResult: React.FC = () => {
         >
           <Vidgroup videos={results.videoDocuments} />
           <Pagination
-            count={results.totalPage}
+            count={results.totalPage - 1}
             page={currentPage}
             onChange={handlePaginationChange}
             size="large"
