@@ -61,7 +61,7 @@ const SearchResult: React.FC = () => {
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
-    setCurrentPage(page);
+    setCurrentPage(page - 1);
   };
 
   return (
@@ -76,8 +76,8 @@ const SearchResult: React.FC = () => {
         >
           <Vidgroup videos={results.videoDocuments} />
           <Pagination
-            count={results.totalPage - 1}
-            page={currentPage}
+            count={results.totalPage}
+            page={currentPage + 1}
             onChange={handlePaginationChange}
             size="large"
           />
