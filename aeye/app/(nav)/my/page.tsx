@@ -1,6 +1,6 @@
 "use client";
 import { styled } from "@mui/material/styles";
-import { Box, Grid, Paper, Avatar, Tooltip, Typography } from "@mui/material";
+import { Box, Grid, Paper } from "@mui/material";
 import ProfileAvatar from "./ProfileAvatar";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
