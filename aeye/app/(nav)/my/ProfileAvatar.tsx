@@ -1,10 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { memberState } from "@/app/recoil-states";
 import { Avatar, Typography, Tooltip } from "@mui/material";
 import fetchWithInterception from "@/app/fetchWrapper";
 
 export default function ProfileAvatar() {
-  const [member, setMember] = useState<Member | null>(null);
+  const [member, setMember] = useRecoilState(memberState);
 
   useEffect(() => {
     fetchWithInterception("https://api.a-eye.live/member/detail", {
