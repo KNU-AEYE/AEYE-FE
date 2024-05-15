@@ -24,6 +24,7 @@ export default function ProfileAvatar() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          marginTop: "10px",
           marginBottom: "20px",
         }}
       >
