@@ -92,7 +92,7 @@ function GoogleLoginButton() {
       variant="outlined"
       onClick={handleLoginWithGoogle}
       startIcon={<GoogleIcon />}
-      color="primary"
+      color="secondary"
       size="small"
     >
       Sign in with Google
@@ -113,7 +113,7 @@ function KakaoLoginButton() {
       variant="outlined"
       onClick={handleLoginWithKakao}
       startIcon={<KakaoIcon />}
-      color="primary"
+      color="secondary"
       size="small"
     >
       Sign in with Kakao
