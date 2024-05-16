@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { memberState } from "@/app/recoil-states";
-import { Avatar, Typography, Tooltip } from "@mui/material";
+import { Avatar, Typography } from "@mui/material";
 import fetchWithInterception from "@/app/fetchWrapper";
 
 export default function ProfileAvatar() {
@@ -28,18 +28,16 @@ export default function ProfileAvatar() {
           marginBottom: "20px",
         }}
       >
-        <Tooltip title="Update profile" placement="top-start">
-          <Avatar
-            alt="User member"
-            src={member.profileUri}
-            sx={{
-              width: 100,
-              height: 100,
-              backgroundColor: "#f0f0f0", // Add background color
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Add subtle shadow
-            }}
-          />
-        </Tooltip>
+        <Avatar
+          alt="User member"
+          src={member.profileUri}
+          sx={{
+            width: 100,
+            height: 100,
+            backgroundColor: "#f0f0f0", // Add background color
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Add subtle shadow
+          }}
+        />
         <Typography variant="h5" component="h2" style={{ marginTop: "12px" }}>
           {member.name}
         </Typography>
