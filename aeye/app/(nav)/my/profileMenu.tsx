@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { memberState } from "@/app/recoil-states";
 import {
@@ -14,24 +15,16 @@ import GoogleIcon from "@/app/google";
 
 export default function ProfileMenu() {
   const [member, setMember] = useRecoilState(memberState);
+  const [phone, setPhone] = useState("");
 
   const handleClick = async () => {
-    const newPhoneNumber = prompt("Enter your new phone number:");
-    if (newPhoneNumber) {
-      const response = await fetchWithInterception("/api/member/phone", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ phone: newPhoneNumber }),
-      });
-      if (response.ok) {
-        //setMember({ ...member, phone: newPhoneNumber });
-        alert("Phone number updated successfully!");
-      } else {
-        alert("Failed to update phone number. Please try again.");
-      }
-    }
+    fetchWithInterception("https://api.a-eye.live/member/phone", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone }),
+    }).catch((error) => console.error(error));
   };
 
   return (
@@ -57,6 +50,8 @@ export default function ProfileMenu() {
             size="small"
             fullWidth
             autoFocus
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
         </Box>
         <Box
