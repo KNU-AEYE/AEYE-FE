@@ -9,6 +9,8 @@ import {
   Box,
 } from "@mui/material";
 import fetchWithInterception from "@/app/fetchWrapper";
+import KakaoIcon from "@/app/kakao";
+import GoogleIcon from "@/app/google";
 
 export default function ProfileMenu() {
   const [member, setMember] = useRecoilState(memberState);
@@ -40,10 +42,13 @@ export default function ProfileMenu() {
       >
         <Typography variant="h6">Account Linking Information</Typography>
         <Divider />
-        <Typography variant="body1">{member?.socialLogin}</Typography>
+        <Typography variant="body1" sx={{ textAlign: "center" }}>
+          {member?.socialLogin}
+          {member?.socialLogin === "GOOGLE" ? <GoogleIcon /> : <KakaoIcon />}
+        </Typography>
       </Paper>
       <Paper elevation={3} sx={{ padding: "20px", width: "100%" }}>
-        <Typography variant="h6">Update Phone Number</Typography>
+        <Typography variant="h6">Update Phone Number </Typography>
         <Divider />
         <Box mt={2}>
           <TextField
