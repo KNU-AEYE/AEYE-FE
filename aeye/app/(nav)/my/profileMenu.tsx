@@ -36,8 +36,8 @@ export default function ProfileMenu() {
         <Typography variant="h6">Account Linking Information</Typography>
         <Divider />
         <Typography variant="body1" sx={{ textAlign: "center" }}>
-          {member?.socialLogin}
           {member?.socialLogin === "GOOGLE" ? <GoogleIcon /> : <KakaoIcon />}
+          {member?.socialLogin}
         </Typography>
       </Paper>
       <Paper elevation={3} sx={{ padding: "20px", width: "100%" }}>
