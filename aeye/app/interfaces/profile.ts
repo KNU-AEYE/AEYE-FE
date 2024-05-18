@@ -8,3 +8,10 @@ type Member = {
   socialLogin: string;
   admin: boolean;
 };
+
+type MemberOnline = {
+  id: 0;
+  name: "string";
+  profileUri: "string";
+  socialLogin: "GOOGLE";
+};
