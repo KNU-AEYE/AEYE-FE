@@ -78,7 +78,7 @@ export default function Landing() {
     <RootContainer>
       <CustomTypography variant="h1">AEYE</CustomTypography>
       <Typography variant="overline" color="white" mb="15px" gutterBottom>
-        the smart survaillence system
+        the smart surveillance system
       </Typography>
       <ButtonContainer>
         <GoogleLoginButton />
