@@ -10,4 +10,9 @@ const memberState = atom<Member | null>({
   default: null,
 });
 
-export { searchQueryState, memberState };
+const selectedTagsState = atom<string[]>({
+  key: "selectedTagsState",
+  default: [],
+});
+
+export { searchQueryState, memberState, selectedTagsState };
