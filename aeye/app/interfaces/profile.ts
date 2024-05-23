@@ -6,6 +6,7 @@ type Member = {
   oauth2Id: string;
   phone: string;
   socialLogin: string;
+  subscribeDailyReport: boolean;
   admin: boolean;
 };
 
