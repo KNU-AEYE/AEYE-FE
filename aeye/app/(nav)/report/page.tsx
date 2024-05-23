@@ -1,8 +1,9 @@
-"use server";
+"use client";
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Container } from "@mui/material";
+import fetchWithInterception from "@/app/fetchWrapper";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -82,6 +83,19 @@ function DataTable() {
   );
 }
 
+function GenerateButton() {
+  const buttonClick = () => {
+    fetchWithInterception("https://api.a-eye.live/email", { method: "POST" });
+  };
+  return (
+    <Box display="flex" justifyContent="flex-end" mb={2} mt={2}>
+      <Button variant="contained" onClick={buttonClick}>
+        생성하기
+      </Button>
+    </Box>
+  );
+}
+
 export default async function Report() {
   const today = new Date();
   const formattedDate = `${today.getDate()}/${
@@ -99,19 +113,7 @@ export default async function Report() {
         </Typography>
       </Box>
       <DataTable />
-      <Box display="flex" justifyContent="flex-end" mb={2} mt={2}>
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: "#65d586",
-            "&:hover": {
-              bgcolor: "#3b7a38",
-            },
-          }}
-        >
-          생성하기
-        </Button>
-      </Box>
+      <GenerateButton />
     </Container>
   );
 }
