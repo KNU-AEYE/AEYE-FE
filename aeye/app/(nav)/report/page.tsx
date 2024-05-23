@@ -1,9 +1,9 @@
-"use client";
+"use server";
 import * as React from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Container } from "@mui/material";
-import fetchWithInterception from "@/app/fetchWrapper";
+import { Box, Container } from "@mui/material";
+import GenerateButton from "@/app/(nav)/report/generateButton";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -80,19 +80,6 @@ function DataTable() {
         checkboxSelection
       />
     </div>
-  );
-}
-
-function GenerateButton() {
-  const buttonClick = () => {
-    fetchWithInterception("https://api.a-eye.live/email", { method: "POST" });
-  };
-  return (
-    <Box display="flex" justifyContent="flex-end" mb={2} mt={2}>
-      <Button variant="contained" onClick={buttonClick}>
-        생성하기
-      </Button>
-    </Box>
   );
 }
 
