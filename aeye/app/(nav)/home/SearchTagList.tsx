@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import { selectedTagsState } from "@/app/recoil-states";
 import { useRecoilState } from "recoil";
 
@@ -17,7 +17,7 @@ export default function SearchTagList() {
     });
   };
   return (
-    <>
+    <Stack flexDirection="row" mb="15px">
       {tags.map((tag, index) => (
         <Chip
           label={tag}
@@ -28,6 +28,6 @@ export default function SearchTagList() {
           onClick={() => handleChipClick(tag)}
         />
       ))}
-    </>
+    </Stack>
   );
 }

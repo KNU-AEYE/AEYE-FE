@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { searchQueryState } from "@/app/recoil-states";
+import { searchQueryState, selectedTagsState } from "@/app/recoil-states";
 import fetchWithInterception from "@/app/fetchWrapper";
 import Vidpane from "@/app/components/Vidpane";
 import { Grid, Typography, Pagination, Container } from "@mui/material";
@@ -37,13 +37,18 @@ const SearchResult: React.FC = () => {
   const searchQuery = useRecoilValue(searchQueryState);
   const [results, setResults] = useState<Vidarr | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const selectedTags = useRecoilValue(selectedTagsState);
+  const cityPlaceholder = "";
+  const districtPlaceholder = "";
 
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
 
     const fetchResults = () => {
       fetchWithInterception(
-        `https://api.a-eye.live/video/search?keyword=${searchQuery}&page=${currentPage}&size=${PAGE_SIZE}`,
+        `https://api.a-eye.live/video/search/v2?keyword=${searchQuery}&city=${cityPlaceholder}&district=${districtPlaceholder}&tag=${
+          selectedTags === undefined ? "" : selectedTags
+        }&page=${currentPage}&size=${PAGE_SIZE}`,
         { method: "GET" }
       )
         .then((response) => response.json())
@@ -55,7 +60,7 @@ const SearchResult: React.FC = () => {
       searchTimeout = setTimeout(fetchResults, FETCH_TIMEOUT);
     }
     return () => clearTimeout(searchTimeout);
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, currentPage, selectedTags]);
 
   const handlePaginationChange = (
     event: React.ChangeEvent<unknown>,
