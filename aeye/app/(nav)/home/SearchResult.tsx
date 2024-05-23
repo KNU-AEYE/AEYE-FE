@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { searchQueryState } from "@/app/recoil-states";
+import { searchQueryState, selectedTagsState } from "@/app/recoil-states";
 import fetchWithInterception from "@/app/fetchWrapper";
 import Vidpane from "@/app/components/Vidpane";
-import { Grid, Paper, Typography, Pagination } from "@mui/material";
+import { Grid, Typography, Pagination, Container } from "@mui/material";
 
 const FETCH_TIMEOUT = 200;
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 
 function Vidgroup({ videos }: { videos: VideoDocument[] }) {
   return (
     <Grid container spacing={2}>
       {videos.map((video, index) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-          <Paper style={{ padding: 10, background: "#f0f0f0" }}>
-            <Vidpane video={video} />
-          </Paper>
+          <Vidpane video={video} />
         </Grid>
       ))}
     </Grid>
@@ -38,14 +36,19 @@ function NoResultTypography() {
 const SearchResult: React.FC = () => {
   const searchQuery = useRecoilValue(searchQueryState);
   const [results, setResults] = useState<Vidarr | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const selectedTags = useRecoilValue(selectedTagsState);
+  const cityPlaceholder = "";
+  const districtPlaceholder = "";
 
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
 
     const fetchResults = () => {
       fetchWithInterception(
-        `https://api.a-eye.live/video/search?keyword=${searchQuery}&page=${currentPage}&size=${PAGE_SIZE}`,
+        `https://api.a-eye.live/video/search/v2?keyword=${searchQuery}&city=${cityPlaceholder}&district=${districtPlaceholder}&tag=${
+          selectedTags === undefined ? "" : selectedTags
+        }&page=${currentPage}&size=${PAGE_SIZE}`,
         { method: "GET" }
       )
         .then((response) => response.json())
@@ -57,30 +60,33 @@ const SearchResult: React.FC = () => {
       searchTimeout = setTimeout(fetchResults, FETCH_TIMEOUT);
     }
     return () => clearTimeout(searchTimeout);
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, currentPage, selectedTags]);
 
   const handlePaginationChange = (
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
-    setCurrentPage(page);
+    setCurrentPage(page - 1);
   };
 
   return (
     <>
       {results && results.videoDocuments.length > 0 ? (
-        <>
+        <Container
+          sx={{
+            display: "grid",
+            placeItems: "center",
+            gap: "20px",
+          }}
+        >
           <Vidgroup videos={results.videoDocuments} />
-          <div
-            style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
-          >
-            <Pagination
-              count={results.totalPage}
-              page={currentPage}
-              onChange={handlePaginationChange}
-            />
-          </div>
-        </>
+          <Pagination
+            count={results.totalPage}
+            page={currentPage + 1}
+            onChange={handlePaginationChange}
+            size="large"
+          />
+        </Container>
       ) : (
         <NoResultTypography />
       )}

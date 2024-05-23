@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import VideoInfos from "./VidInfos";
-import { ThumbnailImage, Video, VideoContainer } from "@/app/styled";
+import Skeleton from "@mui/material/Skeleton";
+import {
+  ThumbnailImage,
+  Video,
+  VideoContainer,
+} from "@/app/components/styledVid";
 
 function timeStringToSeconds(timeString: string) {
   const timeParts = timeString.split(":").map(Number);
@@ -74,11 +79,17 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
 
   return (
     <>
-      {thumbnailSrc && (
+      {thumbnailSrc ? (
         <ThumbnailImage
           src={thumbnailSrc}
           alt={video.videoResponseDto.title}
           onClick={handleClick}
+        />
+      ) : (
+        <Skeleton
+          variant="rectangular"
+          animation="wave"
+          sx={{ width: "100%", height: "100%" }}
         />
       )}
       <Backdrop

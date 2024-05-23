@@ -6,5 +6,13 @@ type Member = {
   oauth2Id: string;
   phone: string;
   socialLogin: string;
+  subscribeDailyReport: boolean;
   admin: boolean;
+};
+
+type MemberOnline = {
+  id: 0;
+  name: "string";
+  profileUri: "string";
+  socialLogin: "GOOGLE";
 };
