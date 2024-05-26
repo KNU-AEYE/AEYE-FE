@@ -9,18 +9,17 @@ export default function Cams() {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      try {
-        const response = await fetchWithInterception(
-          `https://api.a-eye.live/video?page=${page}&size=12`,
-          {
-            method: "GET",
-          }
-        );
-        const jsonData = await response.json();
-        setVideos((prevVideos) => [...prevVideos, ...jsonData.data.videos]);
-      } catch (error) {
-        console.error(error);
-      }
+      fetchWithInterception(
+        `https://api.a-eye.live/video?page=${page}&size=12`,
+        {
+          method: "GET",
+        }
+      )
+        .then((response) => response.json())
+        .then((jsonData) =>
+          setVideos((prevVideos) => [...prevVideos, ...jsonData.data.videos])
+        )
+        .catch((error) => console.error(error));
     };
 
     fetchVideos();
@@ -31,10 +30,11 @@ export default function Cams() {
   }, [page]);
 
   const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
+    const threshold = 5;
+    const windowHeight = window.innerHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const docHeight = document.documentElement.offsetHeight;
+    if (windowHeight + scrollTop >= docHeight - threshold) {
       setPage((prevPage) => prevPage + 1);
     }
   };
