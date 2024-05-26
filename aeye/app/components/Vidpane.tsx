@@ -75,7 +75,10 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
   useEffect(() => {
     const timeInSeconds = timeStringToSeconds(video.time);
     generateThumbnail(video.videoResponseDto.videoUri, timeInSeconds);
-  }, []);
+    return () => {
+      setThumbnailSrc(null);
+    };
+  }, [video]);
 
   return (
     <>
