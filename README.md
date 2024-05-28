@@ -1,13 +1,17 @@
+<div align=center>
+
 # AEYE-FE
 
-FrontEnd Repo for AEYE the smart surveillance system 👮
+Frontend for ***AEYE*** the smart surveillance system 👮
 
 
 Checkout on [a-eye.live](https://www.a-eye.live)!
 
----
+<br>
+<br>
 
-### 🔨 Tech Stack
+
+## 🔨 Tech Stack
 
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -15,9 +19,12 @@ Checkout on [a-eye.live](https://www.a-eye.live)!
 ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
 <img src="https://img.shields.io/badge/Recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white" />
 
----
 
-### ✨ Features 
+<br>
+<br>
+
+
+## ✨ Features 
 
 
 | Login                   | Profile                |
@@ -29,3 +36,7 @@ Checkout on [a-eye.live](https://www.a-eye.live)!
 |:-------------------------------:|:-------------------------------:|:------------:|
 |![Report](https://github.com/KNU-AEYE/AEYE-FE/assets/64245628/3d49a2d6-d899-47b3-9529-f07108797512) |![Feed](https://github.com/KNU-AEYE/AEYE-FE/assets/64245628/3649e966-4ba2-4bc2-9906-13f8685abe01) | ![Search](https://github.com/KNU-AEYE/AEYE-FE/assets/64245628/61f8a599-34a7-4562-b3ec-e11e067c0862)|
 
+
+
+
+</div>
