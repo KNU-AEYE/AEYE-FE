@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { memberState } from "@/app/recoil-states";
 import {
   Paper,
@@ -15,7 +15,7 @@ import KakaoIcon from "@/app/kakao";
 import GoogleIcon from "@/app/google";
 
 export default function ProfileMenu() {
-  const [member, setMember] = useRecoilState(memberState);
+  const member = useRecoilValue(memberState);
   const [phone, setPhone] = useState("");
 
   const handleClick = async () => {
@@ -25,7 +25,15 @@ export default function ProfileMenu() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ phone }),
-    }).catch((error) => console.error(error));
+    })
+      .then((response) => response.json())
+      .then((jsonData) => {
+        if (jsonData.code == 204) {
+          alert("전화번호가 변경되었습니다.");
+          location.reload();
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
