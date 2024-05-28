@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { memberState } from "@/app/recoil-states";
 import { Alert, Box, Grid, Switch, FormControlLabel } from "@mui/material";
@@ -21,19 +21,23 @@ function AddPhoneNumberInfo() {
   );
 }
 
-function SubscribtionSwitch() {
+function SubscriptionSwitch() {
   const profile = useRecoilValue(memberState);
-  const [isSubscribed, setIsSubscribed] = useState(
-    profile?.subscribeDailyReport
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(
+    profile?.subscribeDailyReport || false
   );
+
+  useEffect(() => {
+    if (profile) {
+      setIsSubscribed(profile.subscribeDailyReport);
+    }
+  }, [profile]);
 
   const handleToggle = () => {
     setIsSubscribed(!isSubscribed);
     fetchWithInterception("https://api.a-eye.live/member/subscribe", {
       method: "PUT",
-    })
-      .then((response) => response.json())
-      .then((jsonData) => console.log(jsonData));
+    });
   };
   return (
     <FormControlLabel
@@ -56,7 +60,7 @@ export default function MyPage() {
         <Grid item xs={12} sm={8} md={6}>
           <AddPhoneNumberInfo />
           <ProfileAvatar />
-          <SubscribtionSwitch />
+          <SubscriptionSwitch />
           <ProfileMenu />
         </Grid>
       </Grid>
