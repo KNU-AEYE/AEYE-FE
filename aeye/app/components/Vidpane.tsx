@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import VideoInfos from "./VidInfos";
 import Skeleton from "@mui/material/Skeleton";
@@ -33,6 +33,7 @@ function timeStringToSeconds(timeString: string) {
 export default function Vidpane({ video }: { video: VideoDocument }) {
   const [showVideoInfo, setShowVideoInfo] = useState(false);
   const [thumbnailSrc, setThumbnailSrc] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handleClick = () => {
     setShowVideoInfo(true);
@@ -53,8 +54,8 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
       });
 
       const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      canvas.width = video.videoWidth / 4;
+      canvas.height = video.videoHeight / 4;
       const ctx = canvas.getContext("2d");
       if (ctx) {
         video.currentTime = timeStamp;
@@ -80,6 +81,28 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
     };
   }, [video]);
 
+  useEffect(() => {
+    const handleLoadedMetadata = () => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = timeStringToSeconds(video.time);
+      }
+    };
+
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener("loadedmetadata", handleLoadedMetadata);
+    }
+
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener(
+          "loadedmetadata",
+          handleLoadedMetadata
+        );
+      }
+    };
+  }, [showVideoInfo]);
+
   return (
     <>
       {thumbnailSrc ? (
@@ -102,7 +125,7 @@ export default function Vidpane({ video }: { video: VideoDocument }) {
       >
         <VideoContainer>
           <Video
-            id="videoPlayer"
+            ref={videoRef}
             controls
             src={video.videoResponseDto.videoUri}
           />
